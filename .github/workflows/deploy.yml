@@ -22,5 +22,7 @@ jobs:
         port: 22
         script: |
           cd /var/www/wuj-public-site
+          git config --global --add safe.directory /var/www/wuj-public-site
+          git reset --hard origin/main
           git pull origin main
           sudo systemctl reload nginx
