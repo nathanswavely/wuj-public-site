@@ -1,0 +1,57 @@
+name: Deploy to AWS Lightsail
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install AWS CLI
+        run: |
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          unzip awscliv2.zip
+          sudo ./aws/install
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Deploy to Lightsail
+        run: |
+          # Create a deployment package
+          zip -r deployment.zip . -x "*.git*" "Resources/*" "*.md"
+
+          # Upload to S3 (optional staging area)
+          # aws s3 cp deployment.zip s3://your-bucket-name/
+
+          # SSH and deploy (you'll need to set up SSH keys)
+          # Or use AWS Systems Manager Session Manager
+
+          # Example: Copy files via SCP
+          # scp -i ${{ secrets.SSH_PRIVATE_KEY }} deployment.zip user@your-lightsail-ip:/var/www/html/
+
+          echo "Deployment package created. Configure SSH access to complete deployment."
+          echo "See README for detailed Lightsail deployment instructions."
+
+      # Alternative: Use rsync to sync files
+      # - name: Sync files to Lightsail
+      #   env:
+      #     LIGHTSAIL_IP: ${{ secrets.LIGHTSAIL_IP }}
+      #     SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      #   run: |
+      #     echo "$SSH_PRIVATE_KEY" > private_key.pem
+      #     chmod 600 private_key.pem
+      #     rsync -avz --exclude='.git' --exclude='Resources' \
+      #       -e "ssh -i private_key.pem -o StrictHostKeyChecking=no" \
+      #       ./ ubuntu@$LIGHTSAIL_IP:/var/www/html/
+      #     rm private_key.pem

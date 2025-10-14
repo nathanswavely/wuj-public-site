@@ -1,0 +1,19 @@
+# System files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Resources folder (original files)
+Resources/
+
+# Logs
+*.log
+
+# Environment files
+.env
+.env.local
