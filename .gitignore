@@ -9,7 +9,6 @@ Thumbs.db
 *.swo
 
 # Resources folder (original files)
-Resources/
 
 # Logs
 *.log
