@@ -11,7 +11,7 @@ async function loadShowHistory() {
     const showCountElement = document.getElementById('showCount');
 
     try {
-        const response = await fetch('Resources/shows.json');
+        const response = await fetch('../Resources/shows.json');
         if (!response.ok) {
             throw new Error('Failed to load shows data');
         }
