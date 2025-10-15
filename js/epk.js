@@ -43,13 +43,19 @@ async function loadShowHistory() {
 
             toggleButton.addEventListener('click', function() {
                 isExpanded = !isExpanded;
-                const hiddenShows = timelineContainer.querySelectorAll('.show-card.hidden');
+                const allCards = timelineContainer.querySelectorAll('.show-card');
 
                 if (isExpanded) {
-                    hiddenShows.forEach(card => card.classList.remove('hidden'));
+                    // Show all cards
+                    allCards.forEach(card => card.classList.remove('hidden'));
                     toggleButton.textContent = 'Show Fewer Venues';
                 } else {
-                    hiddenShows.forEach(card => card.classList.add('hidden'));
+                    // Hide cards after initialShowCount
+                    allCards.forEach((card, index) => {
+                        if (index >= initialShowCount) {
+                            card.classList.add('hidden');
+                        }
+                    });
                     toggleButton.textContent = 'Show More Venues';
                     // Scroll to timeline
                     timelineContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });

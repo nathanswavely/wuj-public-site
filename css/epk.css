@@ -309,6 +309,14 @@
     display: block;
     font-size: 0.85rem;
     padding: 0.6rem 1.5rem;
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    border: 2px solid var(--primary-color);
+}
+
+#toggleShows:hover {
+    background-color: var(--primary-dark);
+    border-color: var(--primary-dark);
 }
 
 /* Contact Section */
